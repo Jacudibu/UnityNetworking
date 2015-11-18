@@ -18,15 +18,10 @@ public class SuperNetworkManager : NetworkManager
     new public static SuperNetworkManager singleton { get { if (_singleton == null) _singleton = GameObject.FindObjectOfType<SuperNetworkManager>();  return _singleton; } }
 
     public static bool isServer { get { return _isServer; } }
-
     public static bool isHost { get { return _isServer && _isClient; } }
-
     public static bool isClient { get { return _isClient; } }
-
     public static bool isConnected { get { return _isConnected; } }
-
     public static int connectionID { get { return _connectionID; } }
-
     public static NetworkClient networkClient { get { return _networkClient; } }
 
     // ---------------
@@ -42,7 +37,7 @@ public class SuperNetworkManager : NetworkManager
         _connectionID = msg.ReadMessage<MessageWithInt>().value;
         NetworkEventManager.FireConnectionIDChanged();
     }
-     
+
     // ----------------------
     // -- Client Functions --
     // ----------------------

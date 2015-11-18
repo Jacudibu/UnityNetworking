@@ -5,4 +5,5 @@
     Map,
     Whisper,
     Command,
+    Error,
 }
