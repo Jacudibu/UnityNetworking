@@ -2,9 +2,9 @@
 using UnityEngine.Networking;
 using System.Collections;
 
-public class NetworkPlayer : NetworkObject
+public class WeirdNetworkPlayer : NetworkObject
 {
-    public static NetworkPlayer localPlayer;
+    public static NetworkObject localPlayer;
 
     [Tooltip("Drag children which should only be enabled if the object has local authority here.")]
     public GameObject[] authorityOnlyChildren;
@@ -73,12 +73,12 @@ public class NetworkPlayer : NetworkObject
         GameObject bullet = (GameObject)Instantiate(bulletPrefab, position, rotation);
         NetworkServer.Spawn(bullet);
 
-        bullet.GetComponent<Projectile>().RpcInitialize(rotation);
+        bullet.GetComponent<WeirdProjectile>().RpcInitialize(rotation);
 
         // If the server is not hosting, it won't execute RPCs.
         if (!SuperNetworkManager.isClient)
         {
-            bullet.GetComponent<Projectile>().LocalInitialize(rotation);
+            bullet.GetComponent<WeirdProjectile>().LocalInitialize(rotation);
         }
     }
 }

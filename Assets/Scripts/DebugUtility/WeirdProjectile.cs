@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 
-public class Projectile : NetworkBehaviour
+public class WeirdProjectile : NetworkBehaviour
 {
     public float damage = 10f;
     public float initialVelocity = 1000f;
@@ -25,7 +25,7 @@ public class Projectile : NetworkBehaviour
     {
         NetworkServer.Destroy(gameObject);
 
-        if (collision.gameObject.GetComponent<NetworkPlayer>() != null)
-            collision.gameObject.GetComponent<NetworkPlayer>().TakeDamage(damage);
+    //    if (collision.gameObject.GetComponent<NetworkPlayer>() != null)
+   //         collision.gameObject.GetComponent<NetworkPlayer>().TakeDamage(damage);
     }
 }

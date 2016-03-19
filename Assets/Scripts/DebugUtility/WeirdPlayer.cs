@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 
-public class Player : NetworkPlayer
+public class WeirdPlayer : WeirdNetworkPlayer
 {
 	override public void Update ()
     {

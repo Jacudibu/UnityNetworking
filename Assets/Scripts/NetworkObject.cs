@@ -31,6 +31,14 @@ public class NetworkObject : NetworkBehaviour
 
     protected Rigidbody rb;
 
+    private bool updateRigidbody;
+
+    [SyncVar]
+    private Vector3 targetVelocity;
+
+    [SyncVar]
+    private Vector3 targetAngularVelocity;
+
     virtual public void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -88,6 +96,19 @@ public class NetworkObject : NetworkBehaviour
         }
     }
 
+    virtual public void FixedUpdate()
+    {
+        if (!hasAuthority)
+        {
+            if (updateRigidbody)
+            {
+                rb.velocity = targetVelocity;
+                rb.angularVelocity = targetAngularVelocity;
+                updateRigidbody = false;
+            }
+        }
+    }
+
     private IEnumerator SyncValues()
     {
         if (networkUpdatesPerSecond == 0)
@@ -118,10 +139,9 @@ public class NetworkObject : NetworkBehaviour
         }
     }
     
-    [ClientRpc] private void RpcApplyRigidbodyVelocities(Vector3 velocity, Vector3 angularVelocity)
+    [ClientRpc] private void RpcApplyRigidbodyVelocities()
     {
-        rb.velocity = velocity;
-        rb.angularVelocity = angularVelocity;
+        updateRigidbody = true;
     }
 
     [Command] private void CmdSyncPosition(Vector3 target)
@@ -136,12 +156,14 @@ public class NetworkObject : NetworkBehaviour
 
     [Command] private void CmdSyncRigidbody(Vector3 velocity, Vector3 angularVelocity)
     {
-        RpcApplyRigidbodyVelocities(velocity, angularVelocity);
+        targetVelocity = velocity;
+        targetAngularVelocity = angularVelocity;
+
+        RpcApplyRigidbodyVelocities();
 
         if (!isClient) // RPCs will only be called on clients, so make sure we sync it on Server-Only Mode anyways.
         {
-            rb.velocity = velocity;
-            rb.angularVelocity = angularVelocity;
+            updateRigidbody = true;
         }
     }
 }

@@ -5,11 +5,11 @@ using System.Collections;
 public class Nameplate : NetworkBehaviour
 {
     public TextMesh nameplateText;
-    NetworkPlayer player;
+    NetworkObject player;
 
 	void Start ()
     {
-        player = GetComponent<NetworkPlayer>();
+        player = GetComponent<NetworkObject>();
 
         if (hasAuthority)
         {
